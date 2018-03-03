@@ -1,7 +1,7 @@
 const dbFac = global.rootRequire('app/infra/db/dbFactory');
 const { check, validationResult } = require('express-validator/check');
 const SubItemDAO = global.rootRequire('app/infra/subItem/subItemDAO')();
-const BaseCRUD = global.rootRequire('app/routes/baseCRUD');
+const BaseCRUD = global.rootRequire('app/routes/baseCRUD')();
 
 const util = require('util');
 
@@ -35,9 +35,19 @@ function SubItemCRUD(app)
   app.post("/subitem/load", function(req, res){
     var subItemDAO = new SubItemDAO();
     subItemDAO.load(req.query.id, function(error, result){
-      base.responseQuery(req, res, error, result);
+      const baseCRUD = new BaseCRUD();
+      baseCRUD.responseQuery(req, res, error, result);
     })
   });
+
+  app.post("/subitem/loadlist", function(req, res){
+    var subItemDAO = new SubItemDAO();
+    subItemDAO.loadList(req.body.id, function(error, result){
+      const baseCRUD = new BaseCRUD();
+      baseCRUD.responseQuery(req, res, error, result);
+    })
+  });
+  
 }
 
 module.exports = SubItemCRUD;

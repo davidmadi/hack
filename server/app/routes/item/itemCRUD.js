@@ -1,7 +1,7 @@
 const dbFac = global.rootRequire('app/infra/db/dbFactory');
 const { check, validationResult } = require('express-validator/check');
 const ItemDAO = global.rootRequire('app/infra/item/itemDAO')();
-const BaseCRUD = global.rootRequire('app/routes/baseCRUD');
+const BaseCRUD = global.rootRequire('app/routes/baseCRUD')();
 
 const util = require('util');
 
@@ -30,12 +30,13 @@ function ItemCRUD(app)
       else  
         res.json(result.rows);
     });
-  });
+  }); 
 
-  app.post("/item/load", function(req, res){
+  app.post("/item/loadlist", function(req, res){
     var itemDAO = new ItemDAO();
-    itemDAO.load(req.query.id, function(error, result){
-      base.responseQuery(req, res, error, result);
+    itemDAO.loadList(req.body, function(error, result){
+      const baseCRUD = new BaseCRUD();
+      baseCRUD.responseQuery(req, res, error, result);
     })
   });
 }

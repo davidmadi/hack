@@ -10,4 +10,4 @@ class BaseCRUD
 }
 
 
-module.exports = new BaseCRUD;
+module.exports = function(){return BaseCRUD;};
