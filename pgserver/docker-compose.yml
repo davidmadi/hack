@@ -1,0 +1,21 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+services:
+
+  db:
+    image: pghack
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - /Users/davidmadi/Dev/hack/volumes/pgdata:/var/lib/postgresql/data
+      - /Users/davidmadi/Dev/hack/volumes/transfer:/var/lib/postgresql/transfer
+    environment:
+      POSTGRES_PASSWORD: hagadol23
+      POSTGRES_USER: root
+
+  ##adminer:
+  ##  image: adminer
+  ##  restart: always
+  ##  ports:
+  ##    - 8080:8080
