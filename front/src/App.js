@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './css/pure-min.css';
 import './css/side-menu.css';
-import Items from './Views/Items';
+import ListItems from './Views/ListItems';
+import SubItemsList from './Views/SubItemsList';
 import About from './Views/About';
 import MenuApp from './Views/MenuApp';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -21,8 +22,9 @@ class App extends Component {
           <div id="content">
             {this.props.children}
           </div>            
-          <Route path="/items" component={Items} />
+          <Route path="/items" component={ListItems} />
           <Route path="/about" component={About} />
+          <Route path="/subitems" component={SubItemsList} />
         </div>
       </Router>
     )
