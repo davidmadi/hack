@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import Item from './Item';
-import EditItem from './EditItem';
+import EditSubItem from './EditSubItem';
 import { Link } from "react-router-dom";
 
 class SubItemsList extends Component {
 
   constructor(props){
     super(props);
-    this.state = {...props};
+    this.state = {itemid : props.match.params.itemid, listsubitems : []};
   }
 
   componentDidMount(){
 
-    fetch('http://localhost:8080/item/loadlist',
+    const bod = JSON.stringify({id : this.state.itemid});
+    fetch('http://localhost:8080/subitem/loadlist',
     {
         method: "POST",
         headers:{
           'content-type': 'application/json;charset=UTF-8'
         },
-        body: {}
+        body: bod
     })
     .then(response => {
       if(response.ok){
@@ -28,7 +29,7 @@ class SubItemsList extends Component {
       }
     })
     .then((response) => {
-      this.setState({itemsList:response});
+      this.setState({listsubitems:response});
     });
 
   }
@@ -40,32 +41,28 @@ class SubItemsList extends Component {
 
   gotoSubItems(itemToGo, e){
     e.preventDefault();
-
-
   }
 
   render() {
     return (
       <div id="listofitems">
-        <EditItem ref={(edititem) => this.editItemComponent = edititem} />
+        <EditSubItem ref={(edititem) => this.editItemComponent = edititem} />
         <table className="pure-table">
           <thead>
               <tr>
-                <th>Ida</th>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th></th>
                 <th></th>
               </tr>
           </thead>
           {
-            this.state.itemsList.map(item => {
+            this.state.listsubitems.map(item => {
               return <tr>
                   <td>{item.id}</td>
                   <td>{item.name}</td>
                   <td>{item.description}</td>
                   <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} itemid={item.id} /></td>
-                  <td><Link to="/SubItems" state={item}>Go</Link></td>
               </tr>
               }
             )

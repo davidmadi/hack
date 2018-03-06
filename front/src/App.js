@@ -24,7 +24,7 @@ class App extends Component {
           </div>            
           <Route path="/items" component={ListItems} />
           <Route path="/about" component={About} />
-          <Route path="/subitems" component={SubItemsList} />
+          <Route path="/subitems/:itemid" component={SubItemsList} />
         </div>
       </Router>
     )

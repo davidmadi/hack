@@ -65,7 +65,7 @@ class ListItems extends Component {
                   <td>{item.name}</td>
                   <td>{item.description}</td>
                   <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} itemid={item.id} /></td>
-                  <td><Link to="/SubItems" state={item}>Go</Link></td>
+                  <td><Link to={`/SubItems/${item.id}`} >Go</Link></td>
               </tr>
               }
             )
