@@ -31,7 +31,11 @@ class EditItem extends Component {
         }
       })
       .then((response) => {
-        this.setState(itemToSave);
+        this.props.store.dispatch({
+          type: "ITEMCHANGE",
+          item:this.state
+        });
+        //this.setState(itemToSave);
       });
     }
   }

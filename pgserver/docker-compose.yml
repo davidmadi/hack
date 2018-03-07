@@ -14,8 +14,8 @@ services:
       POSTGRES_PASSWORD: hagadol23
       POSTGRES_USER: root
 
-  ##adminer:
-  ##  image: adminer
-  ##  restart: always
-  ##  ports:
-  ##    - 8080:8080
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8181:8080

@@ -2,12 +2,22 @@ import React, { Component } from 'react';
 import Item from './Item';
 import EditSubItem from './EditSubItem';
 import { Link } from "react-router-dom";
+import {createStore} from 'redux';
+import ReducerFunction from '../Reducer/SubItemsReducer';
 
 class SubItemsList extends Component {
+
+  store = createStore(ReducerFunction);
 
   constructor(props){
     super(props);
     this.state = {itemid : props.match.params.itemid, listsubitems : []};
+  }
+
+  componentWillMount(){
+    this.store.subscribe(() => {
+      this.setState({listsubitems:this.store.getState()});
+    });
   }
 
   componentDidMount(){
@@ -29,7 +39,11 @@ class SubItemsList extends Component {
       }
     })
     .then((response) => {
-      this.setState({listsubitems:response});
+      this.store.dispatch({
+        type:"FIRSTLISTITEMS",
+        listsubitems:response
+      });
+      //this.setState({listsubitems:response});
     });
 
   }

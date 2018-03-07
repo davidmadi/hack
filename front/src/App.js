@@ -22,7 +22,7 @@ class App extends Component {
           <div id="content">
             {this.props.children}
           </div>            
-          <Route path="/items" component={ListItems} />
+          <Route path="/items" component={() => <ListItems />} />
           <Route path="/about" component={About} />
           <Route path="/subitems/:itemid" component={SubItemsList} />
         </div>

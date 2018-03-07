@@ -2,12 +2,22 @@ import React, { Component } from 'react';
 import Item from './Item';
 import EditItem from './EditItem';
 import { Link } from "react-router-dom";
+import {createStore} from 'redux';
+import ReducerFunction from '../Reducer/ItemsReducer';
 
 class ListItems extends Component {
+
+  store = createStore(ReducerFunction);
 
   constructor(){
     super();
     this.state = {itemsList:[], editItem:null};
+  }
+
+  componentWillMount(){
+    this.store.subscribe(() => {
+      this.setState({itemsList:this.store.getState()});
+    });
   }
 
   componentDidMount(){
@@ -24,13 +34,15 @@ class ListItems extends Component {
       if(response.ok){
         return response.json();
       } else {
-        throw new Error("não foi possível obter a lista");
+        throw new Error("not possible to fetch list");
       }
     })
     .then((response) => {
-      this.setState({itemsList:response});
+      this.store.dispatch({
+        type:"FIRSTLISTITEMS",
+        itemsList:response
+      });
     });
-
   }
 
   showEdit(itemToEdit, e){
@@ -40,14 +52,12 @@ class ListItems extends Component {
 
   gotoSubItems(itemToGo, e){
     e.preventDefault();
-
-
   }
 
   render() {
     return (
       <div id="listofitems">
-        <EditItem ref={(edititem) => this.editItemComponent = edititem} />
+        <EditItem ref={(edititem) => this.editItemComponent = edititem} store={this.store} />
         <table className="pure-table">
           <thead>
               <tr>
