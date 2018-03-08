@@ -68,18 +68,20 @@ class ListItems extends Component {
                 <th></th>
               </tr>
           </thead>
+          <tbody>
           {
             this.state.itemsList.map(item => {
-              return <tr>
+              return <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>{item.name}</td>
                   <td>{item.description}</td>
-                  <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} itemid={item.id} /></td>
+                  <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} /></td>
                   <td><Link to={`/SubItems/${item.id}`} >Go</Link></td>
               </tr>
               }
             )
           }
+          </tbody>
         </table>
       </div>
     )

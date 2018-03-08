@@ -5,7 +5,8 @@ class EditSubItem extends Component {
 
   constructor(props){
     super(props);
-    this.state = {...props};
+    this.store = props.store;
+    this.state = {id:-1, name : '', description:''};
   }
 
   save(e){
@@ -31,7 +32,12 @@ class EditSubItem extends Component {
         }
       })
       .then((response) => {
-        this.setState({id:0, name:null});
+        this.setState(response[0]);
+        this.props.store.dispatch({
+          type:"ITEMCHANGE",
+          subitem:response[0]
+        });
+        //this.setState({id:0, name:null});
       });
     }
   }
@@ -45,12 +51,13 @@ class EditSubItem extends Component {
 
   render() {
 
-    if (!this.state.name)
+    if (this.state.id < 0)
       return ("");
 
     return (
       <div id="edititem">
         <table className="pure-table">
+        <tbody>
           <tr>
             <td>Name</td>
             <td><input type="text" value={this.state.name} onChange={this.changeName.bind(this)} /></td>
@@ -63,6 +70,7 @@ class EditSubItem extends Component {
             <td></td>
             <td><input type="button" value="Save" onClick={this.save.bind(this)}/></td>
           </tr>
+        </tbody>
         </table>
       </div>
     )

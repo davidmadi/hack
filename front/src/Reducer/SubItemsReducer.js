@@ -4,8 +4,8 @@ export default function itemsReducer(state=[], action){
     return action.listsubitems;
   }
   else if (action.type == "ITEMCHANGE"){
-    const allWithoutIt = state.filter(i => i.id != action.item.id);
-    const newArray = allWithoutIt.concat(allWithoutIt, [action.item]);
+    const allWithoutIt = state.filter(i => i.id != action.subitem.id);
+    const newArray = allWithoutIt.concat([action.subitem]);
     return newArray;
   }
 

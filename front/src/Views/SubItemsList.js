@@ -53,6 +53,11 @@ class SubItemsList extends Component {
     this.editItemComponent.setState(itemToEdit);
   }
 
+  newItem(e){
+    e.preventDefault();
+    this.editItemComponent.setState({id:0, name:"", description:"", itemid:this.state.itemid});
+  }
+
   gotoSubItems(itemToGo, e){
     e.preventDefault();
   }
@@ -60,7 +65,7 @@ class SubItemsList extends Component {
   render() {
     return (
       <div id="listofitems">
-        <EditSubItem ref={(edititem) => this.editItemComponent = edititem} />
+        <EditSubItem ref={(edititem) => this.editItemComponent = edititem} store={this.store} />
         <table className="pure-table">
           <thead>
               <tr>
@@ -70,17 +75,23 @@ class SubItemsList extends Component {
                 <th></th>
               </tr>
           </thead>
-          {
-            this.state.listsubitems.map(item => {
-              return <tr>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.description}</td>
-                  <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} itemid={item.id} /></td>
-              </tr>
-              }
-            )
-          }
+          <tbody>
+            {
+              this.state.listsubitems.map(item => {
+                return <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.description}</td>
+                    <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} /></td>
+                </tr>
+                }
+              )
+            }
+            <tr>
+              <td colSpan="3"></td>
+              <td><input type="button" value="New" onClick={this.newItem.bind(this)} /></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     )
