@@ -3,6 +3,7 @@ var load = require('express-load');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var validator = require('express-validator');
+var io = require('socket.io');
 
 global.rootRequire = function(name) {
   return require(__dirname + '/../' + name);//depends current directory
@@ -11,6 +12,7 @@ global.rootRequire = function(name) {
 module.exports = function() {
     var app = express();
     app.use(cors());
+    app.use(io);
 
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());

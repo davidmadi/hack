@@ -27,8 +27,11 @@ function ItemCRUD(app)
     itemDAO.save(req.body, function(err, result){
       if (err)
         res.json({errors:[{msg: err.message}]});
-      else  
+      else
+      {  
+        app.get('io').emit('itemChange', result.rows);
         res.json(result.rows);
+      }
     });
   }); 
 
