@@ -16,6 +16,8 @@ import {
   ListItem,
   Right
 } from "native-base";
+import SocketIOClient from 'socket.io-client';
+
 
 export default class ListItemsScreen extends React.Component {
 
@@ -23,24 +25,27 @@ export default class ListItemsScreen extends React.Component {
     super(props);
     this.state = {itemsList:[{id:0, name:"Loading"}], isLoading: true};
     this.fetchList = this.fetchList.bind(this);
+    this.connectSocket = this.connectSocket.bind(this);
+    this.replaceItem = this.replaceItem.bind(this);
   }
 
   componentDidMount(){
     this.fetchList();
+    this.connectSocket();
   }
 
   connectSocket(){
-    var ws = new WebSocket('ws://localhost:8080');
+    this.socket = SocketIOClient('http://localhost:8080');
+    this.socket.on('itemChange', (response) => 
+      this.replaceItem(response[0])
+      //alert(response)
+    );
+  }
 
-    ws.onopen = () => {
-      // connection opened
-      ws.send('something'); // send a message
-    };
-    
-    ws.onmessage = (e) => {
-      // a message was received
-      console.log(e.data);
-    };    
+  replaceItem(item){
+    const newList = this.state.itemsList.filter(i => i.id != item.id);
+    newList.push(item);
+    this.setState({itemsList:newList})
   }
 
   fetchList(){
