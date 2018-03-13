@@ -5,7 +5,7 @@ export default function itemsReducer(state=[], action){
   }
   else if (action.type == "ITEMCHANGE"){
     const allWithoutIt = state.filter(i => i.id != action.item.id);
-    const newArray = allWithoutIt.concat(allWithoutIt, [action.item]);
+    const newArray = allWithoutIt.concat([action.item]);
     return newArray;
   }
 
