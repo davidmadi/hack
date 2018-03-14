@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import Item from './Item';
 import EditSubItem from './EditSubItem';
-import { Link } from "react-router-dom";
 import {createStore} from 'redux';
 import ReducerFunction from '../Reducer/SubItemsReducer';
 

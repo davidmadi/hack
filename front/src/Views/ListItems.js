@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Item from './Item';
 import EditItem from './EditItem';
-import { Link } from "react-router-dom";
 import {createStore} from 'redux';
 import ReducerFunction from '../Reducer/ItemsReducer';
 
@@ -11,7 +10,7 @@ class ListItems extends Component {
 
   constructor(){
     super();
-    this.state = {itemsList:[], editItem:null};
+    this.state = {itemsList:[], editItem:{id:-1}};
   }
 
   componentWillMount(){
@@ -46,8 +45,11 @@ class ListItems extends Component {
   }
 
   showEdit(itemToEdit, e){
-    e.preventDefault();
     this.editItemComponent.setState(itemToEdit);
+  }
+
+  showNew(e){
+    this.editItemComponent.setState({id:0, name:"", description:""});
   }
 
   gotoSubItems(itemToGo, e){
@@ -71,17 +73,23 @@ class ListItems extends Component {
           <tbody>
           {
             this.state.itemsList.map(item => {
-              return <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.description}</td>
-                  <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} /></td>
-                  <td><Link to={`/SubItems/${item.id}`} >Go</Link></td>
-              </tr>
+              return <Item key={item.id} item={item} showEdit={this.showEdit.bind(this, item)} />
+/*                <tr key={item.id}>
+                    <td>{item.name}</td>
+                    <td>{item.description}</td>
+                    <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} /></td>
+                    <td><Link to={`/SubItems/${item.id}`} >Go</Link></td>
+                </tr>*/
               }
             )
           }
           </tbody>
+          <tfoot>
+          <tr>
+              <td colSpan="3"></td>
+              <td colSpan="2"><input type="button" value="New" onClick={this.showNew.bind(this)} /></td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     )

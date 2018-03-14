@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Link } from "react-router-dom";
 
-class Item extends Component {
 
-  render() {
-    console.log("render item");
-    return (
-      <tr>
-          <td>{this.props.id}</td>
-          <td>{this.props.name}</td>
-          <td>{this.props.description}</td>
-      </tr>
-    )
-  }
+const Item = (props) =>
+{
+  return (<tr key={props.item.id}>
+    <td>{props.item.id}</td>
+    <td>{props.item.name}</td>
+    <td>{props.item.description}</td>
+    <td><input type="button" value="Edit" onClick={props.showEdit} /></td>
+    <td><Link to={`/SubItems/${props.item.id}`} >Go</Link></td>
+  </tr>);
 }
 
 export default Item;

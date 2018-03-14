@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Item from './Item';
 
 class EditItem extends Component {
 
@@ -14,8 +13,9 @@ class EditItem extends Component {
     if (this.state.id > -1)
     {
       const itemToSave = this.state;
+      const url = (this.state.id > 0) ? 'http://localhost:8080/item/change ': 'http://localhost:8080/item/change';
 
-      fetch('http://localhost:8080/item/change',
+      fetch(url,
       {
           method: "POST",
           headers:{
@@ -33,7 +33,7 @@ class EditItem extends Component {
       .then((response) => {
         this.props.store.dispatch({
           type: "ITEMCHANGE",
-          item:this.state
+          item:response[0]
         });
         //this.setState(itemToSave);
       });
@@ -49,12 +49,11 @@ class EditItem extends Component {
 
   render() {
 
-    if (!this.state.id)
-      return ("");
-
-    return (
+    if (this.state.id >-1)
+      return (
       <div id="edititem">
         <table className="pure-table">
+        <tbody>
           <tr>
             <td>Name</td>
             <td><input type="text" value={this.state.name} onChange={this.changeName.bind(this)} /></td>
@@ -67,9 +66,12 @@ class EditItem extends Component {
             <td></td>
             <td><input type="button" value="Save" onClick={this.save.bind(this)}/></td>
           </tr>
+        </tbody>
         </table>
       </div>
-    )
+      )
+    else
+      return("");
   }
 
 
