@@ -27,8 +27,11 @@ function SubItemCRUD(app)
     subItemDAO.save(req.body, function(err, result){
       if (err)
         res.json({errors:[{msg: err.message}]});
-      else  
+      else{        
         res.json(result.rows);
+        const baseCRUD = new BaseCRUD();
+        baseCRUD.socketEmit('item-'+result.rows[0].itemId+'-subitems', app, result.rows);
+      }
     });
   });
 

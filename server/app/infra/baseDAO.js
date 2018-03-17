@@ -6,22 +6,30 @@ class BaseDAO{
   sendQueries(conn, queries=[], callback){
 
     conn.connect();
-    conn.query('BEGIN', (err, res)=>{
+    try
+    {
+      conn.query('BEGIN', (err, res)=>{
 
-      var i = -1;
-      while(++i < queries.length)
-      {
-        const isLast = (i == queries.length-1);
-        const command = queries[i];
-        if (isLast)
-          this.sendQuery(conn, command, callback);
-        else
-          this.sendQuery(conn, command);
-      }
-    });
+        var i = -1;
+        while(++i < queries.length)
+        {
+          const isLast = (i == queries.length-1);
+          const command = queries[i];
+          if (isLast)
+            this.sendItemQuery(conn, command, callback);
+          else
+            this.sendItemQuery(conn, command);
+        }
+      });
+    }
+    catch(ex)
+    {
+      conn.end();
+      callback(ex);
+    }
   }
 
-  sendQuery(conn, command, callback=null){
+  sendItemQuery(conn, command, callback=null){
     
     conn.query(command.command, command.params,
       (err, res, command) => {
@@ -31,10 +39,42 @@ class BaseDAO{
             conn.query('ROLLBACK');
           else
             conn.query('COMMIT');
+
+          conn.end();
           callback(err, res);        
         }
     });
   }
+
+  sendCommand(conn, command, callback=null){
+    
+    conn.connect();
+    try
+    {
+      //if (!conn.connected)
+      //{
+      //  callback("Database not connected");
+      //}
+      //else
+      {
+        conn.query(command.command, command.params,
+          (err, res, command) => {
+            conn.end();
+            if (callback)
+            {
+              callback(err, res);        
+            }
+        });
+      }
+    }
+    catch(e)
+    {
+      if (conn.connected)
+        conn.end();
+      callback("Database not connected");
+    }
+  }
+  
 }
 
 module.exports = function() {

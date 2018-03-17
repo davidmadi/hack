@@ -1,4 +1,4 @@
-const conString = "postgres://root:hagadol23@localhost/root";
+const conString = "postgres://root:hagadol23@localhost:5432/root";
 //const conStringTest = "postgres://root:hagadol23@localhost/root_test";
 const { Client } = require('pg')
 

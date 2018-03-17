@@ -29,7 +29,7 @@ export default class HomeScreen extends React.Component {
             </Button>
           </Left>
           <Body>
-            <Title>HomeScreen</Title>
+            <Title>Welcome</Title>
           </Body>
           <Right />
         </Header>

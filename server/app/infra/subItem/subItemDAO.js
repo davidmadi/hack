@@ -67,10 +67,8 @@ class SubItemDAO extends BaseDAO {
     try
     {
       const conn = DBFactory.prototype.create();
-      conn.connect();
       const selectCommand = {command:"select * from subitems where itemid=$1::integer;", params:[itemId]};
-
-      this.sendQuery(conn, selectCommand, callback);
+      this.sendCommand(conn, selectCommand, callback);
     }
     catch(ex){
       callback(ex, {});

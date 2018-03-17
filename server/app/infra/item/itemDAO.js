@@ -67,10 +67,8 @@ class ItemDAO extends BaseDAO {
     try
     {
       const conn = DBFactory.prototype.create();
-      conn.connect();
       const selectCommand = {command:"select * from items;", params:[]};
-
-      this.sendQuery(conn, selectCommand, callback);
+      this.sendCommand(conn, selectCommand, callback);
     }
     catch(ex){
       callback(ex, {});

@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Container, Content, Picker, Button, Text } from "native-base";
 import Expo from "expo";
 
-import HomeScreen from "./src/HomeScreen/index.js";
+import HomeIndex from "./src/HomeScreen/index.js";
 export default class AwesomeApp extends Component {
   constructor() {
     super();
@@ -23,6 +23,6 @@ export default class AwesomeApp extends Component {
     if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
-    return <HomeScreen />;
+    return <HomeIndex />;
   }
 }

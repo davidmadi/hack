@@ -18,7 +18,11 @@ function ItemCRUD(app)
       if (err)
         res.json({errors:[{msg: err.message}]});
       else  
+      {
         res.json(result.rows);
+        const baseCRUD = new BaseCRUD();
+        baseCRUD.socketEmit('itemChange', app, result.rows);
+      }
     });
   });
 
@@ -28,9 +32,10 @@ function ItemCRUD(app)
       if (err)
         res.json({errors:[{msg: err.message}]});
       else
-      {  
-        app.get('io').emit('itemChange', result.rows);
+      { 
         res.json(result.rows);
+        const baseCRUD = new BaseCRUD();
+        baseCRUD.socketEmit('itemChange', app, result.rows);
       }
     });
   }); 

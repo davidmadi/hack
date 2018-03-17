@@ -7,6 +7,13 @@ class BaseCRUD
     else
       httpRes.json({errors : err, result:result});
   }
+
+  socketEmit(name, app, result){
+    const io = app.get('io');
+    if (io)
+      io.emit(name, result);
+  }
+
 }
 
 
