@@ -101,10 +101,15 @@ export default class ListItemsScreen extends React.Component {
             contentContainerStyle={{ marginTop: 120 }}
             renderRow={data => {
               return (
-                <ListItem button
-                  onPress={this.navigateToItem.bind(this, data)}>
-                  <Text>{data.name}</Text>
-                </ListItem>
+                <Card>
+                  <CardItem
+                   button
+                   onPress={this.navigateToItem.bind(this, data)}>
+                    <Body>
+                      <Text>{data.name}</Text>
+                    </Body>
+                  </CardItem>
+                </Card>
               );
             }}
           />
