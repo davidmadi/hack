@@ -1,46 +1,41 @@
 import React, { Component } from 'react';
 import Item from './Item';
 import EditItem from './EditItem';
-import {createStore} from 'redux';
-import ReducerFunction from '../Reducer/ItemsReducer';
+import { connect } from 'react-redux'
 
 class ListItems extends Component {
 
-  store = createStore(ReducerFunction);
-
   constructor(){
     super();
-    this.state = {itemsList:[], editItem:{id:-1}};
+    this.state = { editItem:{id:-1} };
+    this.loadList = this.loadList.bind(this);
   }
 
-  componentWillMount(){
-    this.store.subscribe(() => {
-      this.setState({itemsList:this.store.getState()});
+  
+  loadList(){
+    return new Promise((resolve, reject)=>{
+      fetch('http://localhost:8080/item/loadlist',
+      {
+          method: "POST",
+          headers:{
+            'content-type': 'application/json;charset=UTF-8'
+          },
+          body: {}
+      })
+      .then(response => {
+        if(response.ok){
+          resolve(response.json());
+        } else {
+          reject("not possible to fetch list");
+        }
+      });
     });
   }
-
+  
   componentDidMount(){
-
-    fetch('http://localhost:8080/item/loadlist',
-    {
-        method: "POST",
-        headers:{
-          'content-type': 'application/json;charset=UTF-8'
-        },
-        body: {}
-    })
-    .then(response => {
-      if(response.ok){
-        return response.json();
-      } else {
-        throw new Error("not possible to fetch list");
-      }
-    })
+    this.loadList()
     .then((response) => {
-      this.store.dispatch({
-        type:"FIRSTLISTITEMS",
-        itemsList:response
-      });
+      this.props.listLoaded(response);
     });
   }
 
@@ -56,6 +51,7 @@ class ListItems extends Component {
     e.preventDefault();
   }
 
+  
   render() {
     return (
       <div id="listofitems">
@@ -72,14 +68,8 @@ class ListItems extends Component {
           </thead>
           <tbody>
           {
-            this.state.itemsList.map(item => {
-              return <Item key={item.id} item={item} showEdit={this.showEdit.bind(this, item)} />
-/*                <tr key={item.id}>
-                    <td>{item.name}</td>
-                    <td>{item.description}</td>
-                    <td><input type="button" value="Edit" onClick={this.showEdit.bind(this, item)} /></td>
-                    <td><Link to={`/SubItems/${item.id}`} >Go</Link></td>
-                </tr>*/
+            this.props.itemsList.map(item => {
+                return <Item key={item.id} item={item} showEdit={this.showEdit.bind(this, item)} />
               }
             )
           }
@@ -92,8 +82,23 @@ class ListItems extends Component {
           </tfoot>
         </table>
       </div>
-    )
+    );
   }
+
 }
 
-export default ListItems;
+
+const mapStateToProps = state => ({
+  itemsList: state.itemsReducer.itemsList
+})
+
+const mapDispatchToProps = dispatch => ({
+  listLoaded: (list) => {
+    dispatch({
+      type:"FIRSTLISTITEMS",
+      itemsList:list
+    });
+  }
+});
+
+export default connect(mapStateToProps,()=>{})(ListItems)

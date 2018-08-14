@@ -1,12 +1,18 @@
-export default function itemsReducer(state=[], action){
+function initialState(){
+  return {
+    itemsList : []
+  }
+}
+
+export default function itemsReducer(state = initialState(), action){
   if (action.type === "FIRSTLISTITEMS")
   {
-    return action.itemsList;
+    state = {itemsList : action.itemsList};
   }
   else if (action.type === "ITEMCHANGE"){
     const allWithoutIt = state.filter(i => i.id !== action.item.id);
     const newArray = allWithoutIt.concat([action.item]);
-    return newArray;
+    state = {itemsList : newArray};
   }
 
   return state;
